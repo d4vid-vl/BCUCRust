@@ -16,7 +16,7 @@ pub struct Curso {
     creditos : i32,
     vacantes_totales : i32,
     vacantes_disponibles : i32,
-    horario : Modulo
+    horario : Vec<Modulo>
 }
 
 impl Curso {
@@ -37,7 +37,7 @@ impl Curso {
         creditos : i32,
         vacantes_totales : i32,
         vacantes_disponibles : i32,
-        horario : Modulo) -> Result<Self, String> {
+        horario : Vec<Modulo>) -> Result<Self, String> {
         Ok(Curso {
             nrc,
             sigla: sigla.to_string(),
@@ -59,8 +59,10 @@ impl Curso {
     }
     /// Al poner dos cursos distintos, detecta si tienen el mismo horario o no
     pub fn mismo_horario(curso1: &Curso, curso2: &Curso) -> bool {
-        let horario1: &Modulo = &curso1.horario;
-        let horario2: &Modulo = &curso2.horario;
+        let horario1 = &curso1.horario;
+        let horario2 = &curso2.horario;
+
+        if horario1.len() != horario2.len() { return false }
 
         for modulo1 in horario1 {
             let mut encontrado = false;
@@ -88,7 +90,6 @@ impl Curso {
             }
         }
 
-        
         true
     }
 
