@@ -29,6 +29,9 @@ impl Modulo {
     
     const MODULOS: i32 = 8;
 
+    /// Constructor del horario de un curso con tipo, dia, modulo, y sala definidos
+    /// 
+    /// Siempre y cuando los valores entregados sean los vistos en la página, no ejecutará error.
     pub fn new(tipo: &str, dia: &str, modulo: i32, sala: &str) -> Result<Self, String> {
         if !Self::TIPOS.contains(&tipo) {
             return Err(format!("El tipo ({}) de módulo no es válido", tipo));
@@ -53,16 +56,17 @@ impl Modulo {
             sala: sala.to_string()
         })
     }
+    /// Al poner dos cursos distintos, detecta si son similares en cuanto al tipo, día y módulo
     pub fn modulos_identicos(a: &Modulo, b: &Modulo) -> bool {
         a.tipo == b.tipo && a.dia == b.dia && a.modulo == b.modulo
     }
-
+    /// Al poner dos cursos distintos, detecta si pueden complementarse a la hora de hacer el horario
     pub fn modulos_compatibles(a: &Modulo, b: &Modulo) -> bool {
         a.dia != b.dia || a.modulo != b.modulo || a.dia == "SIN HORARIO" || b.dia == "SIN HORARIO"
     }
 }
 
-// Display formateado en consola, sacar después de probar con app
+/// Temporal
 impl fmt::Display for Modulo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
