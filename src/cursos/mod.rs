@@ -2,8 +2,8 @@
 
 mod modulo;
 mod curso;
-mod choquesPermitidos;
+mod choques_permitidos;
 
 pub use modulo::*;
 pub use curso::*;
-pub use choquesPermitidos::*;
+pub use choques_permitidos::*;
