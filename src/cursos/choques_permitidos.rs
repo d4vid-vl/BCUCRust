@@ -22,8 +22,8 @@ struct ExcepcionMultiplesResultados<'a> {
     resultados: Vec<&'a Choque>, // Tipo de datos adecuado para tus resultados
 }
 
-impl ExcepcionMultiplesResultados<'_> {
-    fn new(resultados: Vec<&Choque>) -> Self {
+impl<'a> ExcepcionMultiplesResultados<'a> {
+    fn new(resultados: Vec<&'a Choque>) -> Self {
         ExcepcionMultiplesResultados { resultados }
     }
 
@@ -105,7 +105,7 @@ impl ChoquesPermitidos {
         let choques = self.buscar_choques(sigla1, tipo1, sigla2, tipo2)
             .map_err(|error| match error {
                 ExcepcionMultiplesResultados { resultados: err } => ChoquesErrors::MultiplesResultados(ExcepcionMultiplesResultados { resultados:err }),
-                other_excepcionsinresultado => ChoquesErrors::SinResultado(ExcepcionSinResultado::new()),
+                _other_excepcionsinresultado => ChoquesErrors::SinResultado(ExcepcionSinResultado::new()),
             })?;
     
         if choques.len() > 1 {
