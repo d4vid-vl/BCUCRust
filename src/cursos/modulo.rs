@@ -1,10 +1,10 @@
 use std::fmt;
 
 pub struct Modulo { 
-    tipo: String,
-    dia: String,
-    modulo: i32,
-    sala: String
+    pub tipo: String,
+    pub dia: String,
+    pub modulo: i32,
+    pub sala: String
 }
 
 impl Modulo {
