@@ -1,4 +1,5 @@
 use crate::cursos::Modulo;
+use crate::cursos::ChoquesPermitidos;
 
 pub struct Curso {
     nrc: i32,
@@ -6,7 +7,7 @@ pub struct Curso {
     permite_retiro: bool,
     ingles: bool,
     seccion: i32,
-    aprobacion_espcial: bool,
+    aprobacion_especial: bool,
     area : String,
     formato : String,
     categoria : String,
@@ -27,7 +28,7 @@ impl Curso {
         permite_retiro: bool,
         ingles: bool,
         seccion: i32,
-        aprobacion_espcial: bool,
+        aprobacion_especial: bool,
         area : &str,
         formato : &str,
         categoria : &str,
@@ -44,7 +45,7 @@ impl Curso {
             permite_retiro,
             ingles,
             seccion,
-            aprobacion_espcial,
+            aprobacion_especial,
             area : area.to_string(),
             formato : formato.to_string(),
             categoria : categoria.to_string(),
@@ -57,7 +58,7 @@ impl Curso {
             horario
         })
     }
-    /// Al poner dos cursos distintos, detecta si tienen el mismo horario o no
+    /// Evalua si dos cursos tienen el mismo horario o no
     pub fn mismo_horario(curso1: &Curso, curso2: &Curso) -> bool {
         let horario1 = &curso1.horario;
         let horario2 = &curso2.horario;
@@ -93,5 +94,49 @@ impl Curso {
         true
     }
 
+    /// Evalua si dos horarios son compatibles según sus módulos o si el choque entre ambos de un tipo especifico lo permite para las siglas correspondientes
+    pub fn horarios_compatibles(curso1: &Curso, curso2: &Curso, choques_permitidos: &mut Option<ChoquesPermitidos>) -> bool {
+        let horario1 = &curso1.horario;
+        let horario2 = &curso2.horario;
+        let sigla1 = &curso1.sigla;
+        let sigla2 = &curso2.sigla;
+
+        // Comprobar que choques_permitidos no sea None.
+        if let Some(choques_permitidos) = choques_permitidos.as_mut() {
+        // Dos horarios son compatibles si todos sus módulos son compatibles entre sí,
+        // o bien, se permite el choque entre dos módulos de un tipo específico para las siglas correspondientes.
+                horario1.iter().all(|modulo1| {
+                horario2.iter().all(|modulo2| {
+                Modulo::modulos_compatibles(modulo1, modulo2) ||
+                choques_permitidos.evaluar_choque(sigla1, &modulo1.tipo, sigla2, &modulo2.tipo)
+            })
+        })
+        } else {
+        // Manejar el caso en que choques_permitidos sea None
+            false
+        }
+    }
+
+    /// Crea una nueva instancia de Curso con los argumentos mínimos para poder ser utilizable.
+    pub fn curso_minimo(nrc: i32, sigla: &str, seccion: i32, nombre : &str, profesor : &str, vacantes_disponibles : i32, horario : Vec<Modulo>) -> Curso {
+        Curso {
+            nrc,
+            sigla: String::from(sigla),
+            permite_retiro: false, // Valor sin definir, se puede dejar así si lo necesesita
+            ingles: false, // Valor sin definir, se puede dejar así si lo necesesita
+            seccion,
+            aprobacion_especial: false, // Valor sin definir, se puede dejar así si lo necesesita
+            area: String::new(),
+            formato: String::new(),
+            categoria: String::new(),
+            nombre: String::from(nombre),
+            profesor: String::from(profesor),
+            campus: String::new(),
+            creditos: 0,
+            vacantes_totales: 0,
+            vacantes_disponibles,
+            horario
+        }
+    }
 }
 
