@@ -1,6 +1,6 @@
 use std::fmt;
 
-struct Modulo { 
+pub struct Modulo { 
     tipo: String,
     dia: String,
     modulo: i32,
@@ -53,15 +53,14 @@ impl Modulo {
             sala: sala.to_string()
         })
     }
-    fn modulos_identicos(a: &Modulo, b: &Modulo) -> bool {
+    pub fn modulos_identicos(a: &Modulo, b: &Modulo) -> bool {
         a.tipo == b.tipo && a.dia == b.dia && a.modulo == b.modulo
     }
 
-    fn modulos_compatibles(a: &Modulo, b: &Modulo) -> bool {
+    pub fn modulos_compatibles(a: &Modulo, b: &Modulo) -> bool {
         a.dia != b.dia || a.modulo != b.modulo || a.dia == "SIN HORARIO" || b.dia == "SIN HORARIO"
     }
 }
-
 
 // Display formateado en consola, sacar después de probar con app
 impl fmt::Display for Modulo {
