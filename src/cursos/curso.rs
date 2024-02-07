@@ -1,6 +1,7 @@
 use crate::cursos::Modulo;
 use crate::cursos::ChoquesPermitidos;
 
+/// Set de funciones para relacionar cursos y lograr un mejor horario
 pub struct Curso {
     nrc: i32,
     sigla: String,

@@ -1,5 +1,7 @@
 use std::fmt;
 
+
+/// Set con creador de Módulos y comparador de estos
 pub struct Modulo { 
     pub tipo: String,
     pub dia: String,
