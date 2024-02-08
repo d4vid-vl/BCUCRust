@@ -52,7 +52,6 @@ enum ChoquesErrors<'a> {
 }
 
 
-
 /// Funciones para los choques de horarios
 pub struct ChoquesPermitidos {
     choques: Vec<Choque>
