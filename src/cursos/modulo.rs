@@ -2,6 +2,7 @@ use std::fmt;
 
 
 /// Set con creador de Módulos y comparador de estos
+#[derive(Clone)]
 pub struct Modulo { 
     pub tipo: String,
     pub dia: String,
