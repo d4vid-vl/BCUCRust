@@ -1,7 +1,7 @@
 use scraper::{Html, Selector};
 use serde_json::json;
 use crate::utils::*;
-
+use crate::cursos::*;
 
 pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
     let url_buscacursos = utils::URLS::new().buscacursos;
@@ -25,7 +25,7 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
         // No es posible obtener info desde este link,
         // posiblemente curso no tiene vacantes reservadas
         // Obtener info desde buscador de cursos
-        let curso = obtener_curso(periodo, nrc, url_buscacursos).await?;
+        let curso = general::obtener_curso(periodo, nrc, url_buscacursos).await?;
 
         let cupo = json!({
             "escuela": "Vacantes Libres",
