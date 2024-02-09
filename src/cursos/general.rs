@@ -1,6 +1,6 @@
 use crate::cursos::curso::*;
 use crate::cursos::modulo::*;
-use crate::cursos::utils::*;
+use crate::utils::*;
 
 use reqwest::Client;
 use scraper::Html;
@@ -9,7 +9,7 @@ use select::document::Document;
 use select::predicate::{Class, Name, Predicate};
 
 async fn obtener_cursos(url: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error>> {
-    let response = get_reqwest(url).await?;
+    let response = utils::get_reqwest(url).await?;
     let html = response.text().await?;
     let mut cursos = Vec::new();
 
@@ -66,7 +66,7 @@ async fn obtener_cursos(url: &str) -> Result<Vec<Curso>, Box<dyn std::error::Err
 }
 
 pub async fn buscar_sigla(periodo: &str, sigla: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error>> {
-    let url = URLS::new().buscacursos;
+    let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_sigla={}", url, periodo, sigla);
     let resultado = obtener_cursos(&url_completa).await;
 
@@ -74,7 +74,7 @@ pub async fn buscar_sigla(periodo: &str, sigla: &str) -> Result<Vec<Curso>, Box<
 }
 
 pub async fn buscar_profesor(periodo: &str, profesor: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error>> {
-    let url = URLS::new().buscacursos;
+    let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_profesor={}", url, periodo, profesor);
     let resultado = obtener_cursos(&url_completa).await;
 
@@ -82,7 +82,7 @@ pub async fn buscar_profesor(periodo: &str, profesor: &str) -> Result<Vec<Curso>
 }
 
 pub async fn buscar_curso(periodo: &str, nombre: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error>> {
-    let url = URLS::new().buscacursos;
+    let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_nombre={}", url, periodo, nombre);
     let resultado = obtener_cursos(&url_completa).await;
 
@@ -90,7 +90,7 @@ pub async fn buscar_curso(periodo: &str, nombre: &str) -> Result<Vec<Curso>, Box
 }
 
 pub async fn obtener_curso(periodo: &str, nrc: i32) -> Result<Curso, Box<dyn std::error::Error>> {
-    let url = URLS::new().buscacursos;
+    let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_nrc={}", url, periodo, nrc);
     let resultado = obtener_cursos(&url_completa).await?;
 
@@ -102,7 +102,7 @@ pub async fn obtener_curso(periodo: &str, nrc: i32) -> Result<Curso, Box<dyn std
 }
 
 pub async fn obtener_periodos() -> Result<Vec<String>, Box<dyn std::error::Error>> {
-    let url = URLS::new().buscacursos;
+    let url = utils::URLS::new().buscacursos;
     let client = Client::new();
     let response = client.get(&url).send().await?;
     let html = response.text().await?;
