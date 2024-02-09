@@ -10,3 +10,4 @@
 //! ```
 
 pub mod cursos;
+pub mod utils;
