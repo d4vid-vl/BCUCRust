@@ -9,5 +9,7 @@
 //! BCUCRust = "0.1.0"
 //! ```
 
+pub mod catalogo;
 pub mod cursos;
+pub mod cupos;
 pub mod utils;
