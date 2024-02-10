@@ -1,15 +1,13 @@
 use scraper::{Html, Selector};
 use serde_json::json;
-use crate::utils::*;
-use crate::cursos::*;
+use crate::{cursos::obtener_curso, utils::*};
 
 pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
-    let url_buscacursos = utils::URLS::new().buscacursos;
     let url_cupos = utils::URLS::new().cupos;
     
-    let reqwest = utils::get_reqwest().await?;
-    let response = reqwest.get(&format!("{}?nrc={}&termcode={}", url_cupos, nrc, periodo)).send().await?;
+    let response = utils::get_reqwest(&format!("{}?nrc={}&termcode={}", url_cupos, nrc, periodo)).await?;
     let html = response.text().await?;
+
     let document = Html::parse_document(&html);
     let mut cupos = vec![];
 
@@ -21,11 +19,11 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
     let selector_total = Selector::parse("tr:last-child td:last-child").unwrap();
     let vacantes_disponibles: i32 = document.select(&selector_total).next().unwrap().text().collect::<String>().parse().unwrap_or(0);
 
-    if vacantes_disponibles.is_nan() {
+    if vacantes_disponibles == 0 {
         // No es posible obtener info desde este link,
         // posiblemente curso no tiene vacantes reservadas
         // Obtener info desde buscador de cursos
-        let curso = general::obtener_curso(periodo, nrc, url_buscacursos).await?;
+        let curso = obtener_curso(periodo, nrc).await?;
 
         let cupo = json!({
             "escuela": "Vacantes Libres",
@@ -34,15 +32,15 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
             "concentracion": "",
             "cohorte": "",
             "admision": "",
-            "vacantesOfrecidas": curso["vacantesTotales"],
-            "vacantesOcupadas": curso["vacantesTotales"] - curso["vacantesDisponibles"],
-            "vacantesDisponibles": curso["vacantesDisponibles"]
+            "vacantesOfrecidas": curso.vacantes_totales,
+            "vacantesOcupadas": curso.vacantes_totales - curso.vacantes_disponibles,
+            "vacantesDisponibles": curso.vacantes_disponibles
         });
 
         let resultado = json!({
             "nrc": nrc,
-            "sigla": curso["sigla"],
-            "vacantesDisponibles": curso["vacantesDisponibles"],
+            "sigla": curso.sigla,
+            "vacantesDisponibles": curso.vacantes_disponibles,
             "cupos": [cupo],
             "inseguro": true
         });
@@ -54,7 +52,8 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
         let filas_cupos = document.select(&selector_filas);
 
         for fila in filas_cupos {
-            let columnas = fila.select(&Selector::parse("td").unwrap());
+            let selector = &Selector::parse("td").unwrap();
+            let mut columnas = fila.select(selector);
 
             let escuela = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
             let nivel = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
