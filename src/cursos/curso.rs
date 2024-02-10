@@ -4,22 +4,22 @@ use crate::cursos::ChoquesPermitidos;
 /// Set de funciones para relacionar cursos y lograr un mejor horario
 #[derive(Clone)]
 pub struct Curso {
-    nrc: i32,
-    sigla: String,
-    permite_retiro: bool,
-    ingles: bool,
-    seccion: i32,
-    aprobacion_especial: bool,
-    area : String,
-    formato : String,
-    categoria : String,
-    nombre : String,
-    profesor : String,
-    campus: String,
-    creditos : i32,
-    vacantes_totales : i32,
-    vacantes_disponibles : i32,
-    horario : Vec<Modulo>
+    pub nrc: i32,
+    pub sigla: String,
+    pub permite_retiro: bool,
+    pub ingles: bool,
+    pub seccion: i32,
+    pub aprobacion_especial: bool,
+    pub area : String,
+    pub formato : String,
+    pub categoria : String,
+    pub nombre : String,
+    pub profesor : String,
+    pub campus: String,
+    pub creditos : i32,
+    pub vacantes_totales : i32,
+    pub vacantes_disponibles : i32,
+    pub horario : Vec<Modulo>
 }
 
 impl Curso {
