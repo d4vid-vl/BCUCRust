@@ -11,7 +11,7 @@ pub struct Modulo {
 }
 
 impl Modulo {
-    const TIPOS: [&'static str; 9] = [  
+    const TIPOS: [&'static str; 10] = [  
         "CLAS",
         "LAB",
         "AYU",
@@ -20,7 +20,8 @@ impl Modulo {
         "PRA",
         "SUP",
         "TER",
-        "TES"];
+        "TES",
+        ""];
     
     const DIAS: [&'static str; 6] = [
         "L",
