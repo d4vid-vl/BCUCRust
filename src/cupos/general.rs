@@ -2,7 +2,7 @@ use scraper::{Html, Selector};
 use serde_json::json;
 use crate::{cursos::obtener_curso, utils::*};
 
-pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value, Box<dyn std::error::Error + Send + Sync>> {
     let url_cupos = utils::URLS::new().cupos;
     
     let response = utils::get_reqwest(&format!("{}?nrc={}&termcode={}", url_cupos, nrc, periodo)).await?;
