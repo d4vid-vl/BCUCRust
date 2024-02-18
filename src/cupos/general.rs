@@ -45,7 +45,7 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
             "inseguro": true
         });
 
-        return Ok(resultado);
+        Ok(resultado)
     } else {
         // Obtener filas de cupos
         let selector_filas = Selector::parse("tr:not(:first-child):not(:last-child)").unwrap();
@@ -55,15 +55,15 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
             let selector = &Selector::parse("td").unwrap();
             let mut columnas = fila.select(selector);
 
-            let escuela = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let nivel = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let programa = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let concentracion = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let cohorte = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let admision = columnas.nth(0).unwrap().text().collect::<String>().trim().to_string();
-            let vacantes_ofrecidas: i32 = columnas.nth(0).unwrap().text().collect::<String>().parse().unwrap_or(0);
-            let vacantes_ocupadas: i32 = columnas.nth(0).unwrap().text().collect::<String>().parse().unwrap_or(0);
-            let vacantes_disponibles: i32 = columnas.nth(0).unwrap().text().collect::<String>().parse().unwrap_or(0);
+            let escuela = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let nivel = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let programa = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let concentracion = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let cohorte = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let admision = columnas.next().unwrap().text().collect::<String>().trim().to_string();
+            let vacantes_ofrecidas: i32 = columnas.next().unwrap().text().collect::<String>().parse().unwrap_or(0);
+            let vacantes_ocupadas: i32 = columnas.next().unwrap().text().collect::<String>().parse().unwrap_or(0);
+            let vacantes_disponibles: i32 = columnas.next().unwrap().text().collect::<String>().parse().unwrap_or(0);
 
             let cupo = json!({
                 "escuela": escuela,
@@ -88,6 +88,6 @@ pub async fn obtener_cupos(periodo: &str, nrc: i32) -> Result<serde_json::Value,
             "inseguro": false
         });
 
-        return Ok(resultado);
+        Ok(resultado)
     }
 }

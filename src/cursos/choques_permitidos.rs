@@ -26,10 +26,6 @@ impl<'a> ExcepcionMultiplesResultados<'a> {
     fn new(resultados: Vec<&'a Choque>) -> Self {
         ExcepcionMultiplesResultados { resultados }
     }
-
-    fn to_string(&self) -> String {
-        format!("Múltiples choques encontrados. Revisa los choques permitidos o realiza una búsqueda más precisa. Se han encontrado {} resultados.", self.resultados.len())
-    }
 }
 
 struct ExcepcionSinResultado;
@@ -79,7 +75,7 @@ impl ChoquesPermitidos {
         .iter()
         .filter(|choque| {
 
-           return ((choque.sigla1 == sigla1 || choque.sigla1 == "*") && (choque.tipo1 == tipo1 || choque.tipo1 == "*") &&
+           ((choque.sigla1 == sigla1 || choque.sigla1 == "*") && (choque.tipo1 == tipo1 || choque.tipo1 == "*") &&
             (choque.sigla2 == sigla2 || choque.sigla2 == "*") && (choque.tipo2 == tipo2 || choque.tipo2 == "*")) ||
             
             ((choque.sigla1 == sigla2 || choque.sigla1 == "*") && (choque.tipo1 == tipo2 || choque.tipo1 == "*") &&

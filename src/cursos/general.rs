@@ -65,7 +65,7 @@ async fn obtener_cursos(url: &str) -> Result<Vec<Curso>, Box<dyn std::error::Err
 
             for dia in dias {
                 for modulo in &modulos {
-                    horario.push(Modulo::new(&tipo, &dia, *modulo, &sala)?);
+                    horario.push(Modulo::new(&tipo, dia, *modulo, &sala)?);
                 }
             }
         }
@@ -79,25 +79,19 @@ async fn obtener_cursos(url: &str) -> Result<Vec<Curso>, Box<dyn std::error::Err
 pub async fn buscar_sigla(periodo: &str, sigla: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error + Send + Sync>> {
     let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_sigla={}", url, periodo, sigla);
-    let resultado = obtener_cursos(&url_completa).await;
-
-    return resultado;
+    obtener_cursos(&url_completa).await
 }
 
 pub async fn buscar_profesor(periodo: &str, profesor: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error + Send + Sync>> {
     let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_profesor={}", url, periodo, profesor);
-    let resultado = obtener_cursos(&url_completa).await;
-
-    return resultado;
+    obtener_cursos(&url_completa).await
 }
 
 pub async fn buscar_curso(periodo: &str, nombre: &str) -> Result<Vec<Curso>, Box<dyn std::error::Error + Send + Sync>> {
     let url = utils::URLS::new().buscacursos;
     let url_completa = format!("{}?cxml_semestre={}&cxml_nombre={}", url, periodo, nombre);
-    let resultado = obtener_cursos(&url_completa).await;
-
-    return resultado;
+    obtener_cursos(&url_completa).await
 }
 
 pub async fn obtener_curso(periodo: &str, nrc: i32) -> Result<Curso, Box<dyn std::error::Error + Send + Sync>> {

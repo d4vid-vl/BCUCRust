@@ -27,10 +27,9 @@ pub async fn obtener_detalles_curso(sigla: &str) -> Result<serde_json::Value, Bo
         for curso in requisito.split('y') {
             let mut correquisito = false;
             let curso = curso.trim().replace("(c)", "");
-            if curso != "" && curso != " " {
-                if curso.contains("c"){
+            if !curso.is_empty() && curso != " " && curso.contains("c") {
                     correquisito = true;
-                }
+                
             }
 
             cursos.push(json!({
